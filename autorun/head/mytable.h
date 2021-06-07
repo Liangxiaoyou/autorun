@@ -78,6 +78,9 @@ public:
     void getItem(int i,int j,char* result){
         strcpy(result,tbl[i].getItem(j));
     }
+    bool isIntro(int row){
+        return tbl[row].isIntro();
+    }
 };
 
 #endif

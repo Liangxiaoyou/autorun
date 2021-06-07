@@ -17,8 +17,17 @@ MainWindow::MainWindow(QWidget *parent)
         ui->tableWidget_9->insertRow(i);
         for(int j=0;j<5;j++){
             tbl1.getItem(i,j,result);
+
             item = new QTableWidgetItem(result);
+            if(tbl1.isIntro(i))
+                item->setBackground(QColor(0,200,255));//设为淡蓝色
+            //应该按照utf-8去解析数据·
             ui->tableWidget_9->setItem(i,j,item);
+
+        }
+        if(tbl1.isIntro(i)){
+
+            ui->tableWidget_9->setSpan(i,0,1,5);
         }
     }
     //initDrivers();
