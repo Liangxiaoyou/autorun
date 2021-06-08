@@ -1,4 +1,4 @@
-// QueryKey - Enumerates the subkeys of key and its associated values.
+// QueryValue - Enumerates the subkeys of key and its associated values.
 //     hKey - Key whose subkeys and values are to be enumerated.
 #ifndef _LOGON_H
 #define _LOGON_H
@@ -20,8 +20,8 @@ void byte2charx(BYTE *a,int size,char* b){
     b[i]='\0';
 }
 
- 
-void QueryKey(HKEY hKey,mytable *tbl) 
+//会把注册表某键下的值存储到表格tbl里，以append的形式，不会覆盖原有内容
+void QueryValue(HKEY hKey,mytable *tbl) 
 { 
     TCHAR    achKey[MAX_KEY_LENGTH];   // buffer for subkey name
     DWORD    cbName;                   // size of name string 
@@ -144,10 +144,6 @@ void QueryKey(HKEY hKey,mytable *tbl)
                     //获取文件的时间戳
                     get_time_stamp(spath,timestamp);
                     tbl->appendRow(achValue,description,publisher,spath,timestamp);
-
-                    
-
-                    
                 }
             }
             else {
@@ -185,7 +181,7 @@ void initLogon(mytable *tbl)
                 case 4:head = "HKLM\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run";break;
             }
             tbl->appenIntro(head);
-            QueryKey(hTestKey,tbl);
+            QueryValue(hTestKey,tbl);
             RegCloseKey(hTestKey);
         }
         else cout<<"open HKML fail!->"<<path[i]<<endl;
@@ -206,7 +202,7 @@ void initLogon(mytable *tbl)
                 case 4:head = "HKCU\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run";break;
             }
             tbl->appenIntro(head);
-            QueryKey(hTestKey,tbl);
+            QueryValue(hTestKey,tbl);
             RegCloseKey(hTestKey);
         }
         else cout<<"open HKCU fail!->"<<path[i]<<endl;

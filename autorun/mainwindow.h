@@ -26,6 +26,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    mytable tbl1;
+    mytable tbl1;//logon
+    mytable tbl2;//services
+    mytable tbl3;//derivers
 };
 #endif // MAINWINDOW_H
