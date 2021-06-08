@@ -35,6 +35,8 @@ void initSerDri(mytable *ser,mytable *dri){
     HKEY hKey;
     HKEY hSubKey;
     char* path = "System\\CurrentControlSet\\Services\\";
+    ser->appenIntro("HKLM\\System\\CurrentControlSet\\Services");
+    dri->appenIntro("HKLM\\System\\CurrentControlSet\\Services");
     cout<<"@";
     if( RegOpenKeyEx( HKEY_LOCAL_MACHINE,
                 TEXT(path),

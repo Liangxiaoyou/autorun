@@ -1,12 +1,14 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "./head/logon.h"
 #include "./head/serviceDriver.h"
-
+//#include <QTextCodec>
+//#include <qutf8stringview.h>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    //QTextCodec *code =QtextCodeC::codecForName("GBK");
     ui->setupUi(this);
 //    QString string = "...";
 //    QTextCodec *codec = QTextCodec::codecForName("gb2312");
@@ -15,17 +17,26 @@ MainWindow::MainWindow(QWidget *parent)
     initLogon(&tbl1);
     initSerDri(&tbl2,&tbl3);
     char result [1024];
+//    //test
+//    char*CStr = "你好";
+//    size_t len = strlen(CStr) + 1;
+//    size_t converted = 0;
+//    wchar_t*WStr;
+//    WStr=(wchar_t*)malloc(len*sizeof(wchar_t));
+//    mbstowcs_s(&converted, WStr, len, CStr, _TRUNCATE);
+
+//    //end test
     for(int i=0;i<tbl1.getNrow();i++){
         ui->tableWidget_9->insertRow(i);
         for(int j=0;j<5;j++){
             tbl1.getItem(i,j,result);
 
+            //item = new QTableWidgetItem(result);
+
             item = new QTableWidgetItem(result);
             if(tbl1.isIntro(i))
                 item->setBackground(QColor(0,200,255));//设为淡蓝色
-            //应该按照utf-8去解析数据·
             ui->tableWidget_9->setItem(i,j,item);
-
         }
         if(tbl1.isIntro(i)){
 
@@ -65,6 +76,9 @@ MainWindow::MainWindow(QWidget *parent)
             ui->tableWidget_7->setSpan(i,0,1,5);
         }
     }
+            ui->tableWidget_9->horizontalHeader()->setVisible(true);
+            ui->tableWidget_8->horizontalHeader()->setVisible(true);
+            ui->tableWidget_7->horizontalHeader()->setVisible(true);
 }
 
 MainWindow::~MainWindow()

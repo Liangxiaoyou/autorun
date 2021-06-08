@@ -8,7 +8,7 @@
 #include "timeStamp.h"
 #include "string.h"
 #include <cstring>
-
+//#include "tran.h"
 using namespace std;
 
 void byte2charx(BYTE *a,int size,char* b){
@@ -108,10 +108,10 @@ void QueryValue(HKEY hKey,mytable *tbl)
             achValue[0] = '\0';
             achData[0] = '\0';
             //cout<<"@"<<endl;//如果不加这个endl,那么就不会显示打印的结果
-            retCode = RegEnumValue(
+            retCode = RegEnumValueA(
                 hKey,
                 i, 
-                achValue, 
+                achValue,
                 &cchValue, 
                 NULL, 
                 &type,
@@ -143,7 +143,11 @@ void QueryValue(HKEY hKey,mytable *tbl)
                     get_file_info(spath,"CompanyName",publisher);
                     //获取文件的时间戳
                     get_time_stamp(spath,timestamp);
-                    tbl->appendRow(achValue,description,publisher,spath,timestamp);
+                    tbl->appendRow( achValue,
+                                    description,
+                                    publisher,
+                                    spath,
+                                    timestamp);
                 }
             }
             else {
