@@ -8,7 +8,7 @@
 #define TASKS_TO_RETRIEVE          5
 
 
-int main(int argc, char **argv)
+int main()
 {
   HRESULT hr = S_OK;
   ITaskScheduler *pITS;

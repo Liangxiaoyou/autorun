@@ -2,6 +2,8 @@
 #include "./ui_mainwindow.h"
 #include "./head/logon.h"
 #include "./head/serviceDriver.h"
+#include "./head/schedTask2.h"
+#include <qstring.h>
 //#include <QTextCodec>
 //#include <qutf8stringview.h>
 MainWindow::MainWindow(QWidget *parent)
@@ -32,8 +34,11 @@ MainWindow::MainWindow(QWidget *parent)
             tbl1.getItem(i,j,result);
 
             //item = new QTableWidgetItem(result);
-
-            item = new QTableWidgetItem(result);
+            //应该按照utf-8去解析数据·
+            string a(result);
+            QString b =QString::fromLocal8Bit(a);
+            item = new QTableWidgetItem(b);
+            //
             if(tbl1.isIntro(i))
                 item->setBackground(QColor(0,200,255));//设为淡蓝色
             ui->tableWidget_9->setItem(i,j,item);
@@ -48,10 +53,15 @@ MainWindow::MainWindow(QWidget *parent)
         for(int j=0;j<5;j++){
             tbl2.getItem(i,j,result);
 
-            item = new QTableWidgetItem(result);
+            //item = new QTableWidgetItem(result);
+            //应该按照utf-8去解析数据·
+            string a(result);
+            QString b =QString::fromLocal8Bit(a);
+            item = new QTableWidgetItem(b);
+            //
             if(tbl2.isIntro(i))
                 item->setBackground(QColor(0,200,255));//设为淡蓝色
-            //应该按照utf-8去解析数据·
+
             ui->tableWidget_8->setItem(i,j,item);
 
         }
@@ -65,7 +75,12 @@ MainWindow::MainWindow(QWidget *parent)
         for(int j=0;j<5;j++){
             tbl3.getItem(i,j,result);
 
-            item = new QTableWidgetItem(result);
+            //item = new QTableWidgetItem(result);
+            //应该按照utf-8去解析数据·
+            string a(result);
+            QString b =QString::fromLocal8Bit(a);
+            item = new QTableWidgetItem(b);
+            //
             if(tbl3.isIntro(i))
                 item->setBackground(QColor(0,200,255));//设为淡蓝色
             //应该按照utf-8去解析数据·
