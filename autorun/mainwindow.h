@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -29,5 +29,6 @@ private:
     mytable tbl1;//logon
     mytable tbl2;//services
     mytable tbl3;//derivers
+    mytable tbl4;//activeX
 };
 #endif // MAINWINDOW_H
