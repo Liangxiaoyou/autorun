@@ -20,9 +20,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     //void initLogon();
-    void initDrivers();
-    void initServices();
-    void initSchedTasks();
+//    void initDrivers();
+//    void initServices();
+//    void initSchedTasks();
 
 private:
     Ui::MainWindow *ui;
@@ -30,5 +30,6 @@ private:
     mytable tbl2;//services
     mytable tbl3;//derivers
     mytable tbl4;//activeX
+    mytable tbl5;//knowndlls
 };
 #endif // MAINWINDOW_H

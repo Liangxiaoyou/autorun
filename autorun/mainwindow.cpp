@@ -3,6 +3,7 @@
 #include "./head/logon.h"
 #include "./head/serviceDriver.h"
 #include "./head/activeX.h"
+#include "./head/knownDll.h"
 //#include "./head/sig.h"
 #include <qstring.h>
 //#include <QTextCodec>
@@ -20,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     initLogon(&tbl1);
     initSerDri(&tbl2,&tbl3);
     initActiveX(&tbl4);
+    initKnownDll(&tbl5);
     char result [1024];
 //    //test
 //    char*CStr = "你好";
@@ -118,6 +120,7 @@ MainWindow::MainWindow(QWidget *parent)
             ui->tableWidget_9->horizontalHeader()->setVisible(true);
             ui->tableWidget_8->horizontalHeader()->setVisible(true);
             ui->tableWidget_7->horizontalHeader()->setVisible(true);
+            ui->tableWidget_6->horizontalHeader()->setVisible(true);
 
 }
 
