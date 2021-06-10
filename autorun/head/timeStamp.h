@@ -1,4 +1,4 @@
-#ifndef _TIMESTAMP_H
+﻿#ifndef _TIMESTAMP_H
 #define _TIMESTAMP_H
 
 #include <windows.h>
@@ -60,7 +60,7 @@ bool  get_time_stamp(char * path,char* timestamp)
         return false;
     }
     if(GetLastWriteTime( hFile, szBuf, MAX_PATH )){
-        _tprintf(TEXT("Last write time is: %s\n"), szBuf);
+        //_tprintf(TEXT("Last write time is: %s\n"), szBuf);
         int i=0;
         for(;;i++){
             if(szBuf[i]=='\0') break;

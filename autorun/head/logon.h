@@ -121,16 +121,16 @@ void QueryValue(HKEY hKey,mytable *tbl)
             //cout<<"@"<<endl;
             if (retCode == ERROR_SUCCESS) 
             { 
-                _tprintf(TEXT("(%d) %s\n"), i+1, achValue); 
+                //do not print achvalue cause achvalue may not end with '\0'
+                //_tprintf(TEXT("(%d) %s\n"), i+1, achValue);//千万别随便直接打印啊，官网的代码有问题
                 if(achData == NULL||achData[0] =='\0') cout<<"lpData is NULL\n";
                 else {
                     //cout<<"achdata type is "<<type<<endl;
-                    cout<<"lpData is :"<<achData<<"."<<endl;
-                    char* path;
-                    path= new char[cchData];
-                    char description[MAX_VALUE_NAME];
-                    char publisher[MAX_VALUE_NAME];
-                    char timestamp[MAX_VALUE_NAME];
+                    //cout<<"lpData is :"<<achData<<"."<<endl;
+                    char path[cchData];
+                    char description[MAX_VALUE_NAME]={""};
+                    char publisher[MAX_VALUE_NAME]={""};
+                    char timestamp[MAX_VALUE_NAME]={""};
                     byte2charx(achData,cchData,path);
                     //cout<<"result is "<<result<<endl;
                     //标准化路径
@@ -148,7 +148,7 @@ void QueryValue(HKEY hKey,mytable *tbl)
                                     publisher,
                                     spath,
                                     timestamp);
-                    delete [] path;
+                    //delete [] path;
                 }
             }
             else {
