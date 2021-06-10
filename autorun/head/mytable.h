@@ -1,4 +1,4 @@
-
+﻿
 #ifndef _MYTABLE_H
 #define _MYTABLE_H
 #include <windows.h>
@@ -17,6 +17,11 @@ class myrow{
     int sig; //when sig = 1, means that it is an introduction row
 public:
     myrow(){sig = 0;}
+    ~myrow(){
+        for(int i=0;i<5;i++){
+            if(item[i]) delete [] item[i];
+        }
+    }
     void setRow(int n,char * content){
         //cout<<"@"<<endl;
         item[n] = new char[MAX_VALUE_NAME];

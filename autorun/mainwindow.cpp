@@ -2,7 +2,7 @@
 #include "./ui_mainwindow.h"
 #include "./head/logon.h"
 #include "./head/serviceDriver.h"
-#include "./head/schedTask2.h"
+//#include "./head/schedTask2.h"
 #include <qstring.h>
 //#include <QTextCodec>
 //#include <qutf8stringview.h>
@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
             if(tbl1.isIntro(i))
                 item->setBackground(QColor(0,200,255));//设为淡蓝色
             ui->tableWidget_9->setItem(i,j,item);
+            //delete [] item;
         }
         if(tbl1.isIntro(i)){
 
@@ -63,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
                 item->setBackground(QColor(0,200,255));//设为淡蓝色
 
             ui->tableWidget_8->setItem(i,j,item);
-
+            //delete [] item;
         }
         if(tbl2.isIntro(i)){
             ui->tableWidget_8->setSpan(i,0,1,5);
@@ -85,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent)
                 item->setBackground(QColor(0,200,255));//设为淡蓝色
             //应该按照utf-8去解析数据·
             ui->tableWidget_7->setItem(i,j,item);
+            //delete [] item;
 
         }
         if(tbl3.isIntro(i)){

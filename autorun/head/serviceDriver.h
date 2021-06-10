@@ -1,4 +1,4 @@
-
+﻿
 #include "mytable.h"
 #include "fileDescription.h"
 #include "timeStamp.h"
@@ -198,14 +198,17 @@ void initSerDri(mytable *ser,mytable *dri){
                                                 //写入service表
                                                 dri->appendRow(achKey,description,publisher,spath,timestamp);
                                             }
+                                            delete [] path;
                                         }
+                                        //关闭键
+                                        RegCloseKey(hSubKey);
                                     }
                         else {
                             cout<<"open \""<<subpath<<"\" wrong"<<endl;
                         }
-                        //整理出可执行文件路径,start和type字段
-                        //针对符合条件的文件，找出相关信息写入表格中
+
                         _tprintf(TEXT("(%d) %s\n"), i+1, achKey);
+
                         
                     }
                 }

@@ -1,4 +1,4 @@
-// QueryValue - Enumerates the subkeys of key and its associated values.
+﻿// QueryValue - Enumerates the subkeys of key and its associated values.
 //     hKey - Key whose subkeys and values are to be enumerated.
 #ifndef _LOGON_H
 #define _LOGON_H
@@ -148,6 +148,7 @@ void QueryValue(HKEY hKey,mytable *tbl)
                                     publisher,
                                     spath,
                                     timestamp);
+                    delete [] path;
                 }
             }
             else {
