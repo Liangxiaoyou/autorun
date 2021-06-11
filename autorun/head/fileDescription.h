@@ -1,4 +1,4 @@
-// conGetVer.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+﻿// conGetVer.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
 //#include "pch.h"
@@ -148,7 +148,8 @@ void get_file_info(char* path,char * key,char* result)
         _T(key), ptszStr, 1024);
 
     //std::cout<<ptszStr<<std::endl;
-    strcpy(result,ptszStr);
+    if(bRet)strcpy(result,ptszStr);
+    else result = "";
     //std::cout<<result<<std::endl;
 
     delete ptszStr;

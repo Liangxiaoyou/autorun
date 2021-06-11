@@ -128,9 +128,9 @@ void QueryValue(HKEY hKey,mytable *tbl)
                     //cout<<"achdata type is "<<type<<endl;
                     //cout<<"lpData is :"<<achData<<"."<<endl;
                     char path[cchData];
-                    char description[MAX_VALUE_NAME]={""};
-                    char publisher[MAX_VALUE_NAME]={""};
-                    char timestamp[MAX_VALUE_NAME]={""};
+                    char description[1024]={""};
+                    char publisher[1024]={""};
+                    char timestamp[1024]={""};
                     byte2charx(achData,cchData,path);
                     //cout<<"result is "<<result<<endl;
                     //标准化路径
