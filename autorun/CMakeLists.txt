@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+﻿cmake_minimum_required(VERSION 3.5)
 
 project(learnqt VERSION 0.1 LANGUAGES CXX)
 
@@ -7,6 +7,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -26,6 +27,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+
 
 set(PROJECT_SOURCES
         main.cpp
@@ -52,6 +54,7 @@ else()
 endif()
 
 target_link_libraries(learnqt PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+#target_link_libraries(learnqt PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 set_target_properties(learnqt PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

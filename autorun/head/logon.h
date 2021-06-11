@@ -12,7 +12,7 @@
 //#include "sig.h"
 #include <qstring.h>
 #include "tran.h"
-//#include "tran.h"
+
 using namespace std;
 
 
