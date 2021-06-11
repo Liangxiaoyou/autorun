@@ -7,8 +7,7 @@
 //#include "./head/sig.h"
 //#include "./head/verify.h"
 #include <qstring.h>
-//#include <QTextCodec>
-//#include <qutf8stringview.h>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)

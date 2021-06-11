@@ -7,18 +7,29 @@
 #include "fileDescription.h"
 #include "timeStamp.h"
 #include "string.h"
+#include "windows.h"
 #include <cstring>
+//#include "sig.h"
+#include <qstring.h>
+#include "tran.h"
 //#include "tran.h"
 using namespace std;
 
-void byte2charx(BYTE *a,int size,char* b){
-    int i=0;
-    for(;i<size;i++){
-        b[i] = a[i];
-        //cout<<"a["<<i<<"]="<<a[i]<<endl;
-    }
-    b[i]='\0';
+
+
+
+//from CSDN
+wchar_t * char2wchar(char* pszMultiByte){
+int iSize;
+wchar_t* pwszUnicode ;
+
+//返回接受字符串所需缓冲区的大小，已经包含字符结尾符'\0'
+iSize = MultiByteToWideChar(CP_ACP, 0, pszMultiByte , -1, NULL, 0); //iSize =wcslen(pwsUnicode)+1=6
+pwszUnicode = (wchar_t *)malloc(iSize*sizeof(wchar_t)); //不需要 pwszUnicode = (wchar_t *)malloc((iSize+1)*sizeof(wchar_t))
+MultiByteToWideChar(CP_ACP, 0, pszMultiByte , -1, pwszUnicode , iSize);
+return pwszUnicode;
 }
+
 
 //会把注册表某键下的值存储到表格tbl里，以append的形式，不会覆盖原有内容
 void QueryValue(HKEY hKey,mytable *tbl) 
@@ -141,6 +152,15 @@ void QueryValue(HKEY hKey,mytable *tbl)
                     get_file_info(spath,"FileDescription",description);
                     cout<<"the item description is"<<description<<endl;
                     get_file_info(spath,"CompanyName",publisher);
+
+//                    bool isVerified = VerifyEmbeddedSignature(char2wchar(spath));
+//                    if(isVerified){
+//                        (publisher,"(verified)");
+//                    }
+//                    else{
+//                        mystrcat(publisher,"not verified");
+//                    }
+
                     //获取文件的时间戳
                     get_time_stamp(spath,timestamp);
                     tbl->appendRow( achValue,

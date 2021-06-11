@@ -2,24 +2,11 @@
 #include "mytable.h"
 #include "fileDescription.h"
 #include "timeStamp.h"
-#include "logon.h"
 #include <cstring>
+#include "tran.h"
 
 //
-void mystrcat(char* a,const char* b)
-{
-    //a 不能存着字符串常量，而应该是字符数组。字符串常量c++不允许进行修改！ 
-    for(int i=0;;i++){
-        if(a[i]=='\0'){
-            for(int j=0;b[j]!='\0';j++){
-                a[i] = b[j];
-                i++;
-            }
-            a[i] ='\0';
-            break;
-        }
-    }
-}
+
 bool mystrcmp(const char* a,const char* b){
     for(int i=0;;i++){
         if(a[i] != b[i])  return false;
@@ -212,7 +199,15 @@ void initSerDri(mytable *ser,mytable *dri){
                                             }
                                             else{
                                                 //写入service表
-                                                if(truePathcch >0){
+                                                if(mystrcmp(spath,"C:\\Windows\\System32\\svchost.exe")||
+                                                   mystrcmp(spath,"C:\\Windows\\system32\\svchost.exe")||
+                                                   mystrcmp(spath,"C:\\windows\\System32\\svchost.exe")||
+                                                   mystrcmp(spath,"C:\\windows\\system32\\svchost.exe")||
+                                                   mystrcmp(spath,"c:\\Windows\\System32\\svchost.exe")||
+                                                   mystrcmp(spath,"c:\\Windows\\system32\\svchost.exe")||
+                                                   mystrcmp(spath,"c:\\windows\\System32\\svchost.exe")||
+                                                   mystrcmp(spath,"c:\\windows\\system32\\svchost.exe")
+                                                   ){
                                                     byte2charx(exeTruePath,truePathcch,path);
                                                     getPath(path,spath);
                                                     dri->appendRow(achKey,description,publisher,spath,timestamp);

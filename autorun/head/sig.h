@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <wincrypt.h>
 #include <wintrust.h>
+#include <winbase.h>
 #include <stdio.h>
 #include <tchar.h>
 #include <iostream>
@@ -11,7 +12,7 @@
 #include <string>
 #include <qstring.h>
 
-//#pragma comment(lib, "crypt32.lib")
+#pragma comment(lib, "crypt32.lib")
 #define ENCODING (X509_ASN_ENCODING | PKCS_7_ASN_ENCODING)
 
 typedef struct {
@@ -84,11 +85,10 @@ LPWSTR AllocateAndCopyWideString(LPCWSTR inputString)
 {
     LPWSTR outputString = NULL;
 
-    outputString = (LPWSTR)LocalAlloc(LPTR,
-                                      (wcslen(inputString) + 1) * sizeof(WCHAR));
+    outputString = (LPWSTR)LocalAlloc(LPTR,(wcslen(inputString) + 1) * sizeof(WCHAR));
     if (outputString != NULL)
     {
-        lstrcpyW(outputString, inputString);
+        StringCchCopyW(outputString,(wcslen(inputString) + 1) * sizeof(WCHAR),inputString);
     }
     return outputString;
 }
@@ -402,250 +402,251 @@ BOOL VerifyEmbeddedSignature(LPCWSTR pwszSourceFile)
 }
 
 
-int GetSignaturePublisher(TCHAR *path, QString &res,QString &timed)
-{
-    WCHAR szFileName[MAX_PATH];
-    HCERTSTORE hStore = NULL;
-    HCRYPTMSG hMsg = NULL;
-    PCCERT_CONTEXT pCertContext = NULL;
-    BOOL fResult;
-    DWORD dwEncoding, dwContentType, dwFormatType;
-    PCMSG_SIGNER_INFO pSignerInfo = NULL;
-    PCMSG_SIGNER_INFO pCounterSignerInfo = NULL;
-    DWORD dwSignerInfo;
-    CERT_INFO CertInfo;
-    SPROG_PUBLISHERINFO ProgPubInfo;
-    SYSTEMTIME st;
+//int GetSignaturePublisher(TCHAR *path, QString &res,QString &timed)
+//{
+//    WCHAR szFileName[MAX_PATH];
+//    HCERTSTORE hStore = NULL;
+//    HCRYPTMSG hMsg = NULL;
+//    PCCERT_CONTEXT pCertContext = NULL;
+//    BOOL fResult;
+//    DWORD dwEncoding, dwContentType, dwFormatType;
+//    PCMSG_SIGNER_INFO pSignerInfo = NULL;
+//    PCMSG_SIGNER_INFO pCounterSignerInfo = NULL;
+//    DWORD dwSignerInfo;
+//    CERT_INFO CertInfo;
+//    SPROG_PUBLISHERINFO ProgPubInfo;
+//    SYSTEMTIME st;
 
-    ZeroMemory(&ProgPubInfo, sizeof(ProgPubInfo));
+//    ZeroMemory(&ProgPubInfo, sizeof(ProgPubInfo));
 
-#ifdef UNICODE
-    lstrcpynW(szFileName, path, MAX_PATH);
-#endif
-    // Get message handle and store handle from the signed file.
-    fResult = CryptQueryObject(CERT_QUERY_OBJECT_FILE,
-                               szFileName,
-                               CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED_EMBED,
-                               CERT_QUERY_FORMAT_FLAG_BINARY,
-                               0,
-                               &dwEncoding,
-                               &dwContentType,
-                               &dwFormatType,
-                               &hStore,
-                               &hMsg,
-                               NULL);
-    if (!fResult)
-    {
-        return 1;
-    }
+//#ifdef UNICODE
+//    lstrcpynW(szFileName, path, MAX_PATH);
+//#endif
+//    // Get message handle and store handle from the signed file.
+//    fResult = CryptQueryObject(CERT_QUERY_OBJECT_FILE,
+//                               szFileName,
+//                               CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED_EMBED,
+//                               CERT_QUERY_FORMAT_FLAG_BINARY,
+//                               0,
+//                               &dwEncoding,
+//                               &dwContentType,
+//                               &dwFormatType,
+//                               &hStore,
+//                               &hMsg,
+//                               NULL);
+//    if (!fResult)
+//    {
+//        return 1;
+//    }
 
-    // Get signer information size.
-    fResult = CryptMsgGetParam(hMsg,
-                               CMSG_SIGNER_INFO_PARAM,
-                               0,
-                               NULL,
-                               &dwSignerInfo);
-    if (!fResult)
-    {
-        return 1;
-    }
+//    // Get signer information size.
+//    fResult = CryptMsgGetParam(hMsg,
+//                               CMSG_SIGNER_INFO_PARAM,
+//                               0,
+//                               NULL,
+//                               &dwSignerInfo);
+//    if (!fResult)
+//    {
+//        return 1;
+//    }
 
-    // Allocate memory for signer information.
-    pSignerInfo = (PCMSG_SIGNER_INFO)LocalAlloc(LPTR, dwSignerInfo);
-    if (!pSignerInfo)
-    {
-        return 1;
-    }
+//    // Allocate memory for signer information.
+//    pSignerInfo = (PCMSG_SIGNER_INFO)LocalAlloc(LPTR, dwSignerInfo);
+//    if (!pSignerInfo)
+//    {
+//        return 1;
+//    }
 
-    // Get Signer Information.
-    fResult = CryptMsgGetParam(hMsg,
-                               CMSG_SIGNER_INFO_PARAM,
-                               0,
-                               (PVOID)pSignerInfo,
-                               &dwSignerInfo);
-    if (!fResult)
-    {
-        return 1;
-    }
+//    // Get Signer Information.
+//    fResult = CryptMsgGetParam(hMsg,
+//                               CMSG_SIGNER_INFO_PARAM,
+//                               0,
+//                               (PVOID)pSignerInfo,
+//                               &dwSignerInfo);
+//    if (!fResult)
+//    {
+//        return 1;
+//    }
 
-    // Get program name and publisher information from
-    // signer info structure.
-    GetProgAndPublisherInfo(pSignerInfo, &ProgPubInfo);
+//    // Get program name and publisher information from
+//    // signer info structure.
+//    GetProgAndPublisherInfo(pSignerInfo, &ProgPubInfo);
 
-    // Search for the signer certificate in the temporary
-    // certificate store.
-    CertInfo.Issuer = pSignerInfo->Issuer;
-    CertInfo.SerialNumber = pSignerInfo->SerialNumber;
+//    // Search for the signer certificate in the temporary
+//    // certificate store.
+//    CertInfo.Issuer = pSignerInfo->Issuer;
+//    CertInfo.SerialNumber = pSignerInfo->SerialNumber;
 
-    pCertContext = CertFindCertificateInStore(hStore,
-                                              ENCODING,
-                                              0,
-                                              CERT_FIND_SUBJECT_CERT,
-                                              (PVOID)&CertInfo,
-                                              NULL);
-    if (!pCertContext)
-    {
-        return 1;
-    }
+//    pCertContext = CertFindCertificateInStore(hStore,
+//                                              ENCODING,
+//                                              0,
+//                                              CERT_FIND_SUBJECT_CERT,
+//                                              (PVOID)&CertInfo,
+//                                              NULL);
+//    if (!pCertContext)
+//    {
+//        return 1;
+//    }
 
-    // Print Signer certificate information.
-    PrintCertificateInfo(pCertContext,res);
-    if (GetTimeStampSignerInfo(pSignerInfo, &pCounterSignerInfo))
-        {
-            // Search for Timestamp certificate in the temporary
-            // certificate store.
-            CertInfo.Issuer = pCounterSignerInfo->Issuer;
-            CertInfo.SerialNumber = pCounterSignerInfo->SerialNumber;
+//    // Print Signer certificate information.
+//    PrintCertificateInfo(pCertContext,res);
+//    if (GetTimeStampSignerInfo(pSignerInfo, &pCounterSignerInfo))
+//        {
+//            // Search for Timestamp certificate in the temporary
+//            // certificate store.
+//            CertInfo.Issuer = pCounterSignerInfo->Issuer;
+//            CertInfo.SerialNumber = pCounterSignerInfo->SerialNumber;
 
-            pCertContext = CertFindCertificateInStore(hStore,
-                                                      ENCODING,
-                                                      0,
-                                                      CERT_FIND_SUBJECT_CERT,
-                                                      (PVOID) & CertInfo,
-                                                      NULL);
+//            pCertContext = CertFindCertificateInStore(hStore,
+//                                                      ENCODING,
+//                                                      0,
+//                                                      CERT_FIND_SUBJECT_CERT,
+//                                                      (PVOID) & CertInfo,
+//                                                      NULL);
 
-            // Find Date of timestamp.
-            //"yyyy/MM/dd hh:mm:ss"
-            GetDateOfTimeStamp(pCounterSignerInfo, &st);
-            TCHAR buf[200];
-            TCHAR buf2[200];
-            GetDateFormat(LOCALE_USER_DEFAULT,0, &st, L"yyyy/MM/dd", buf, 200);
-            GetTimeFormat(LOCALE_USER_DEFAULT,0, &st, L"hh:mm:ss", buf2, 200);
-            wcscat_s(buf,L" ");
-            wcscat_s(buf,buf2);
-            //printf("%ls\n",buf);
-            timed = QString::fromWCharArray(buf);
+//            // Find Date of timestamp.
+//            //"yyyy/MM/dd hh:mm:ss"
+//            GetDateOfTimeStamp(pCounterSignerInfo, &st);
+//            TCHAR buf[200];
+//            TCHAR buf2[200];
+//            GetDateFormat(LOCALE_USER_DEFAULT,0, &st, "yyyy/MM/dd", buf, 200);
+//            GetTimeFormat(LOCALE_USER_DEFAULT,0, &st, "hh:mm:ss", buf2, 200);
+//            wcscat_s(buf,L" ");
+//            wcscat_s(buf,buf2);
+//            //printf("%ls\n",buf);
+//            timed = QString::fromWCharArray(buf);
 
-        }
-    //GetDateOfTimeStamp(pCounterSignerInfo, &st);
-    //TCHAR buf[200];
-    //GetDateFormat(LOCALE_USER_DEFAULT, DATE_LONGDATE, &st, NULL, buf, 200);
-    //printf("%ls\n",buf);
-
-
-    // Clean up.
-    if (ProgPubInfo.lpszProgramName != NULL)
-        LocalFree(ProgPubInfo.lpszProgramName);
-    if (ProgPubInfo.lpszPublisherLink != NULL)
-        LocalFree(ProgPubInfo.lpszPublisherLink);
-    if (ProgPubInfo.lpszMoreInfoLink != NULL)
-        LocalFree(ProgPubInfo.lpszMoreInfoLink);
-
-    if (pSignerInfo != NULL) LocalFree(pSignerInfo);
-    if (pCounterSignerInfo != NULL) LocalFree(pCounterSignerInfo);
-    if (pCertContext != NULL) CertFreeCertificateContext(pCertContext);
-    if (hStore != NULL) CertCloseStore(hStore, 0);
-    if (hMsg != NULL) CryptMsgClose(hMsg);
-    return 0;
-}
-
-BOOL GetDateOfTimeStamp(PCMSG_SIGNER_INFO pSignerInfo, SYSTEMTIME* st)
-{
-    BOOL fResult;
-    FILETIME lft, ft;
-    DWORD dwData;
-    BOOL fReturn = FALSE;
-
-    // Loop through authenticated attributes and find
-    // szOID_RSA_signingTime OID.
-    for (DWORD n = 0; n < pSignerInfo->AuthAttrs.cAttr; n++)
-    {
-        if (lstrcmpA(szOID_RSA_signingTime,
-        pSignerInfo->AuthAttrs.rgAttr[n].pszObjId) == 0)
-        {
-            // Decode and get FILETIME structure.
-            dwData = sizeof(ft);
-            fResult = CryptDecodeObject(ENCODING,
-            szOID_RSA_signingTime,
-            pSignerInfo->AuthAttrs.rgAttr[n].rgValue[0].pbData,
-            pSignerInfo->AuthAttrs.rgAttr[n].rgValue[0].cbData,
-            0,
-            (PVOID) & ft,
-            &dwData);
-            if (!fResult)
-            {
-                _tprintf(_T("CryptDecodeObject failed with %x\n"),
-                GetLastError());
-                break;
-            }
-
-            // Convert to local time.
-            FileTimeToLocalFileTime(&ft, &lft);
-            FileTimeToSystemTime(&lft, st);
-
-            fReturn = TRUE;
-
-            break; // Break from for loop.
-
-        } //lstrcmp szOID_RSA_signingTime
-    } // for
-
-    return fReturn;
-}
-
-BOOL GetTimeStampSignerInfo(PCMSG_SIGNER_INFO pSignerInfo, PCMSG_SIGNER_INFO* pCounterSignerInfo)
-{
-    PCCERT_CONTEXT pCertContext = NULL;
-    BOOL fReturn = FALSE;
-    BOOL fResult;
-    DWORD dwSize;
-
-        *pCounterSignerInfo = NULL;
-
-        // Loop through unathenticated attributes for
-        // szOID_RSA_counterSign OID.
-        for (DWORD n = 0; n < pSignerInfo->UnauthAttrs.cAttr; n++)
-        {
-            if (lstrcmpA(pSignerInfo->UnauthAttrs.rgAttr[n].pszObjId,
-                         szOID_RSA_counterSign) == 0)
-            {
-                // Get size of CMSG_SIGNER_INFO structure.
-                fResult = CryptDecodeObject(ENCODING,
-                                            PKCS7_SIGNER_INFO,
-                                            pSignerInfo->UnauthAttrs.rgAttr[n].rgValue[0].pbData,
-                                            pSignerInfo->UnauthAttrs.rgAttr[n].rgValue[0].cbData,
-                                            0,
-                                            NULL,
-                                            &dwSize);
-                if (!fResult)
-                {
+//        }
+//    //GetDateOfTimeStamp(pCounterSignerInfo, &st);
+//    //TCHAR buf[200];
+//    //GetDateFormat(LOCALE_USER_DEFAULT, DATE_LONGDATE, &st, NULL, buf, 200);
+//    //printf("%ls\n",buf);
 
 
-                }
+//    // Clean up.
+//    if (ProgPubInfo.lpszProgramName != NULL)
+//        LocalFree(ProgPubInfo.lpszProgramName);
+//    if (ProgPubInfo.lpszPublisherLink != NULL)
+//        LocalFree(ProgPubInfo.lpszPublisherLink);
+//    if (ProgPubInfo.lpszMoreInfoLink != NULL)
+//        LocalFree(ProgPubInfo.lpszMoreInfoLink);
 
-                // Allocate memory for CMSG_SIGNER_INFO.
-                *pCounterSignerInfo = (PCMSG_SIGNER_INFO)LocalAlloc(LPTR, dwSize);
-                if (!*pCounterSignerInfo)
-                {
+//    if (pSignerInfo != NULL) LocalFree(pSignerInfo);
+//    if (pCounterSignerInfo != NULL) LocalFree(pCounterSignerInfo);
+//    if (pCertContext != NULL) CertFreeCertificateContext(pCertContext);
+//    if (hStore != NULL) CertCloseStore(hStore, 0);
+//    if (hMsg != NULL) CryptMsgClose(hMsg);
+//    return 0;
+//}
 
-                }
+//BOOL GetDateOfTimeStamp(PCMSG_SIGNER_INFO pSignerInfo, SYSTEMTIME* st)
+//{
+//    BOOL fResult;
+//    FILETIME lft, ft;
+//    DWORD dwData;
+//    BOOL fReturn = FALSE;
 
-                // Decode and get CMSG_SIGNER_INFO structure
-                // for timestamp certificate.
-                fResult = CryptDecodeObject(ENCODING,
-                                            PKCS7_SIGNER_INFO,
-                                            pSignerInfo->UnauthAttrs.rgAttr[n].rgValue[0].pbData,
-                                            pSignerInfo->UnauthAttrs.rgAttr[n].rgValue[0].cbData,
-                                            0,
-                                            (PVOID) * pCounterSignerInfo,
-                                            &dwSize);
-                if (!fResult)
-                {
+//    // Loop through authenticated attributes and find
+//    // szOID_RSA_signingTime OID.
+//    for (DWORD n = 0; n < pSignerInfo->AuthAttrs.cAttr; n++)
+//    {
+//        if (lstrcmpA(szOID_RSA_signingTime,
+//        pSignerInfo->AuthAttrs.rgAttr[n].pszObjId) == 0)
+//        {
+//            // Decode and get FILETIME structure.
+//            dwData = sizeof(ft);
+//            fResult = CryptDecodeObject(ENCODING,
+//            szOID_RSA_signingTime,
+//            pSignerInfo->AuthAttrs.rgAttr[n].rgValue[0].pbData,
+//            pSignerInfo->AuthAttrs.rgAttr[n].rgValue[0].cbData,
+//            0,
+//            (PVOID) & ft,
+//            &dwData);
+//            if (!fResult)
+//            {
+//                _tprintf(_T("CryptDecodeObject failed with %x\n"),
+//                GetLastError());
+//                break;
+//            }
+
+//            // Convert to local time.
+//            FileTimeToLocalFileTime(&ft, &lft);
+//            FileTimeToSystemTime(&lft, st);
+
+//            fReturn = TRUE;
+
+//            break; // Break from for loop.
+
+//        } //lstrcmp szOID_RSA_signingTime
+//    } // for
+
+//    return fReturn;
+//}
+
+////BOOL GetTimeStampSignerInfo(PCMSG_SIGNER_INFO pSignerInfo, PCMSG_SIGNER_INFO* pCounterSignerInfo)
+//{
+//    PCCERT_CONTEXT pCertContext = NULL;
+//    BOOL fReturn = FALSE;
+//    BOOL fResult;
+//    DWORD dwSize;
+
+//        *pCounterSignerInfo = NULL;
+
+//        // Loop through unathenticated attributes for
+//        // szOID_RSA_counterSign OID.
+//        for (DWORD n = 0; n < pSignerInfo->UnauthAttrs.cAttr; n++)
+//        {
+//            if (lstrcmpA(pSignerInfo->UnauthAttrs.rgAttr[n].pszObjId,
+//                         szOID_RSA_counterSign) == 0)
+//            {
+//                // Get size of CMSG_SIGNER_INFO structure.
+//                fResult = CryptDecodeObject(ENCODING,
+//                                            PKCS7_SIGNER_INFO,
+//                                            pSignerInfo->UnauthAttrs.rgAttr[n].rgValue[0].pbData,
+//                                            pSignerInfo->UnauthAttrs.rgAttr[n].rgValue[0].cbData,
+//                                            0,
+//                                            NULL,
+//                                            &dwSize);
+//                if (!fResult)
+//                {
 
 
-                }
+//                }
 
-                fReturn = TRUE;
+//                // Allocate memory for CMSG_SIGNER_INFO.
+//                *pCounterSignerInfo = (PCMSG_SIGNER_INFO)LocalAlloc(LPTR, dwSize);
+//                if (!*pCounterSignerInfo)
+//                {
 
-                break; // Break from for loop.
-            }
-        }
+//                }
+
+//                // Decode and get CMSG_SIGNER_INFO structure
+//                // for timestamp certificate.
+//                fResult = CryptDecodeObject(ENCODING,
+//                                            PKCS7_SIGNER_INFO,
+//                                            pSignerInfo->UnauthAttrs.rgAttr[n].rgValue[0].pbData,
+//                                            pSignerInfo->UnauthAttrs.rgAttr[n].rgValue[0].cbData,
+//                                            0,
+//                                            (PVOID) * pCounterSignerInfo,
+//                                            &dwSize);
+//                if (!fResult)
+//                {
 
 
-        // Clean up.
-        if (pCertContext != NULL) CertFreeCertificateContext(pCertContext);
+//                }
+
+//                fReturn = TRUE;
+
+//                break; // Break from for loop.
+//            }
+//        }
 
 
-    return fReturn;
-}
+//        // Clean up.
+//        if (pCertContext != NULL) CertFreeCertificateContext(pCertContext);
+
+
+//    return fReturn;
+//}
+
 #endif // SIG_H
