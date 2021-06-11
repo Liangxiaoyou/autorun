@@ -1,4 +1,4 @@
-#ifndef SIG_H
+﻿#ifndef SIG_H
 #define SIG_H
 
 #include <windows.h>
@@ -9,7 +9,7 @@
 #include <iostream>
 #include <softpub.h>
 #include <string>
-#include <QString>
+#include <qstring.h>
 
 //#pragma comment(lib, "crypt32.lib")
 #define ENCODING (X509_ASN_ENCODING | PKCS_7_ASN_ENCODING)
@@ -73,7 +73,7 @@ BOOL PrintCertificateInfo(PCCERT_CONTEXT pCertContext,QString &res)
 
     //printf("%ls\n",szName);
 
-    res = QString::fromWCharArray(szName);
+    res = QString::fromLocal8Bit(szName);
 
     if (szName != NULL) LocalFree(szName);
 

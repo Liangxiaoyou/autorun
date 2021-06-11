@@ -5,6 +5,7 @@
 #include "./head/activeX.h"
 #include "./head/knownDll.h"
 //#include "./head/sig.h"
+//#include "./head/verify.h"
 #include <qstring.h>
 //#include <QTextCodec>
 //#include <qutf8stringview.h>

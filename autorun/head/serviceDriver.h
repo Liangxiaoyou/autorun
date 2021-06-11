@@ -127,7 +127,9 @@ void initSerDri(mytable *ser,mytable *dri){
                                         int isDriver = -1;
                                         int isService = -1;
                                         BYTE  exepath[MAX_VALUE_NAME];
+                                        BYTE exeTruePath[MAX_VALUE_NAME]="";
                                         DWORD execch= 0;
+                                        DWORD truePathcch =0;
                                         for(j=0,retCode=ERROR_SUCCESS;;j++){
                                             cchValue = MAX_VALUE_NAME; 
                                             cchData = MAX_VALUE_NAME;
@@ -148,10 +150,12 @@ void initSerDri(mytable *ser,mytable *dri){
                                                     isService = achData[0];
                                                     //cout<<"service is "<<isService<<endl;
                                                 }
+
                                                 if(mystrcmp(achValue,"Type")){
                                                     isDriver =  achData[0];
                                                     // cout<<"driver is "<<isDriver<<endl;
                                                 }
+
                                                 if(mystrcmp(achValue,"ImagePath")){
                                                     int k;
                                                     for(k = 0;k < cchData;k++){
@@ -159,7 +163,19 @@ void initSerDri(mytable *ser,mytable *dri){
                                                     }
                                                     exepath[k] = '\0';
                                                     //cout<<"@exepath "<<exepath<<endl;
+                                                    //如果是svchost.exe的路径，那还不行
                                                     execch = cchData;
+                                                }
+
+                                                if(mystrcmp(achValue,"Description")){
+                                                    int k=0,l=0;
+                                                    if(achData[0] == '@') k++;
+                                                    for(;k < cchData;k++){
+                                                        exeTruePath[l++] = achData[k];
+                                                    }
+                                                    exeTruePath[l++] = '\0';
+                                                    //cout<<"@exepath "<<exepath<<endl;
+                                                    truePathcch = l;
                                                 }
                                                 cout<<"@achValue "<<" "<<achValue<<endl;
                                                 //cout<<"@achData"<<" "<<achData<<endl;//打印的如果是REG_BINARY会溢出！！！然后出现莫名其妙的错误。
@@ -196,7 +212,13 @@ void initSerDri(mytable *ser,mytable *dri){
                                             }
                                             else{
                                                 //写入service表
-                                                dri->appendRow(achKey,description,publisher,spath,timestamp);
+                                                if(truePathcch >0){
+                                                    byte2charx(exeTruePath,truePathcch,path);
+                                                    getPath(path,spath);
+                                                    dri->appendRow(achKey,description,publisher,spath,timestamp);
+                                                }
+                                                else dri->appendRow(achKey,description,publisher,spath,timestamp);
+
                                             }
                                             delete [] path;
                                         }

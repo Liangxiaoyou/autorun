@@ -1,4 +1,4 @@
-//-------------------------------------------------------------------
+﻿//-------------------------------------------------------------------
 // Copyright (C) Microsoft.  All rights reserved.
 // Example of verifying the embedded signature of a PE file by using 
 // the WinVerifyTrust function.
@@ -15,7 +15,7 @@
 #include <wintrust.h>
 
 // Link with the Wintrust.lib file.
-#pragma comment (lib, "wintrust")
+#pragma comment (lib, "WinTrust")
 
 #define ENCODING (X509_ASN_ENCODING | PKCS_7_ASN_ENCODING)
 
