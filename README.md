@@ -6,8 +6,11 @@ This is an autorun viewer on windows ,include logon,services,drivers,knowndlls a
 ## enviroment
 use Qt creator 4.15.0 to develop
 
-Based on Qt 5.15.2
+Based on Qt 5.15.2，Qtcore6
 
-can be run at 
+can be run at  win10
+
+use cmake to develop.
+
 ## other
 ## todo
