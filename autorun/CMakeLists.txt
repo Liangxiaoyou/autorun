@@ -11,6 +11,7 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(WINVERIFY "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\um")
 
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check https://doc.qt.io/qt/deployment-android.html for more information.
@@ -53,7 +54,9 @@ else()
     endif()
 endif()
 
-target_link_libraries(learnqt PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(learnqt PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
+    ${WINVERIFY}
+    )
 #target_link_libraries(learnqt PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 set_target_properties(learnqt PROPERTIES
